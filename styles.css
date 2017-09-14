@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+}
+
+p {
+  text-align: center;
+  width: 250px;
+  margin: 10px auto;
+}
+
+#wrapper {
+  border: 1px solid rgb(153, 153, 153);
+  background: rgb(153, 153, 153);
+  width: 250px;
+  height: 300px;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 0; /*to ignore whitespace between the buttons and avoind unwanted new rows*/
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+button, input {
+  outline: none;
+  font-family: 'Open Sans', sans-serif;
+}
+
+input {
+  color: rgb(255, 255, 255);
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: right;
+  font-size: 46px;
+  height: 20%;
+  padding: 10px;
+  border: 0;
+  font-weight: 300;
+  user-select: none;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  width: 25%;
+  height: 16%;
+  background: rgb(224, 224, 224);
+  border: 0;
+  border-bottom: 1px solid rgb(153, 153, 153);
+  border-right: 1px solid rgb(153, 153, 153);
+  font-size: 22px;
+}
+
+button.double {
+  width: 50%;
+}
+
+button.no-border-bottom {
+  border-bottom: 0;
+}
+
+button.no-border-right {
+  border-right: 0;
+}
+
+button.operator {
+  background: rgb(245, 146, 62);
+  color: rgb(255, 255, 255);
+}
+
+button.clear {
+  background: rgb(214, 214, 214);
+}
+
+button.triple {
+  width: 75%;
+}
+
+button:active, button.active {
+  background: rgb(169, 169, 169);
+}
+
+.hidden {
+  visibility: hidden;
+}
