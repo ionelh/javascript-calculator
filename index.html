@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
+  <title>JavaScript Calculator</title>
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
 
@@ -12,10 +12,15 @@
 </head>
 
 <body>
-  <p>Use the mouse or keyboard for interraction (press "c" to clear).</p>
+  <p>
+    Use the mouse or keyboard for interraction:<br />
+    [0-9], * for multiplication, / for division, - for subtraction, + for addition, ^ for exponentiation, = or Enter to get the result
+  </p>
+  <p>Run in the latest version of Chrome for best results.</p>
   <div id="wrapper">
     <input type="text" value="0" id="output" readonly />
-    <button class="triple clear" value="c">C</button>
+    <button class="double clear" value="c">C</button>
+    <button class="operator" value="**">^</button>
     <button class="operator no-border-right" value="/">&#247;</button>
 
     <button class="digit" value="7">7</button>

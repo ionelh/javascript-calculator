@@ -16,6 +16,7 @@ TODO
 (done) handle 0 , 1 + 0 3
 (done) handle 2 / * - +
 (done) highlight buttons when using the keyboard
+(done) handle 2 ^ 3 Enter (gives 0 for some reason)
 handle . 2 + 3 (partially done: works fine, but should display "0.3" when pressing ",3")
 handle , 0 1 + 0 , 0 2 (partially done: works fine, but should display "0.01" when pressing ",01")
 handle - 6 + 3 (partially done but should show "-6" in the ui after pressing "-6"
@@ -26,11 +27,18 @@ handle (really) large numbers
 make output text smaller when the result doesn't fit
 show ',' instead of '.' as decimal separator in the ui
 handle poor / no connection (fonts request times out / fails)
+handle -2 ^ 3 (for some reason Javascript throws an exception when raising negative numbers to a power of)
+handle - when using the shift button (for + for example), and releasing the shift key before the + key, + remains in the "pressed state)"
+*handle 2 + 2 Enter (2, + and 2 clicked with the mouse, and Enter pressed on the keyboard (I think the elm 2 remains focused and hitting enter triggers a click on 2))
 */
 
 (function () {
-  const operators = ['/', '*', '-', '+'];
+  const operators = ['/', '*', '-', '+', '**'];
   const output = document.getElementById('output');
+  const keyValueMap = {
+    'Enter': '=',
+    '^': '**',
+  };
   let inputNumber = '';
   let accumulator = '';
 
@@ -58,7 +66,7 @@ handle poor / no connection (fonts request times out / fails)
     // Ignore these chars if they are at the beginning of the acc.
     // '/' and '*' will make the eval fail and have no effect on the evaluation.
     // '0' will cause the eval to evaluate the expression to octal.
-    if (['/', '*', '0'].includes(accumulator[0])) {
+    while (isFirstCharForbidden(accumulator)) {
       accumulator = accumulator.substr(1);
     }
 
@@ -74,7 +82,7 @@ handle poor / no connection (fonts request times out / fails)
     if (operator !== '=') {
       // If the last char of the accumulator expression is an operator, replace it with the new one
       // (the last clicked clicked operator should be considered).
-      if (isLastCharAnOperator(accumulator)) {
+      while (isLastCharAnOperator(accumulator)) {
         accumulator = accumulator.substr(0, accumulator.length - 1);
       }
       accumulator += operator;
@@ -116,6 +124,10 @@ handle poor / no connection (fonts request times out / fails)
     return operators.includes(inputStr[inputStr.length - 1]);
   }
 
+  function isFirstCharForbidden(inputStr) {
+    return ['/', '*', '0'].includes(inputStr[0]);
+  }
+
   function flickerOutput() {
     output.classList.add('hidden');
     setTimeout(() => {
@@ -124,9 +136,12 @@ handle poor / no connection (fonts request times out / fails)
   }
 
   function handleKeyDown(event) {
+    // this has some side effects, I know, but it's a good compromise to fix the issue marked with "*" above
+    event.preventDefault();
+
     // NOTE I know using event.key might not be the most reliable way, and using event.which is better,
     // but this should serve the purpose of this exercise.
-    const key = event.key === 'Enter' ? '=' : event.key;
+    const key = getMappedKeyValue(event.key);
 
     toggleActive(key);
     if (!isNaN(key)) {
@@ -141,7 +156,7 @@ handle poor / no connection (fonts request times out / fails)
   }
 
   function toggleActive(key) {
-    const keyCopy = key === 'Enter' ? '=' : key;
+    const keyCopy = getMappedKeyValue(key);
 
     try {
       const elm = document.querySelectorAll(`button[value="${keyCopy}"]`)[0];
@@ -149,5 +164,12 @@ handle poor / no connection (fonts request times out / fails)
     } catch (ex) {
 
     }
+  }
+
+  function getMappedKeyValue(key) {
+    while (keyValueMap[key]) {
+      key = key.replace(key, keyValueMap[key]);
+    }
+    return key;
   }
 })();
